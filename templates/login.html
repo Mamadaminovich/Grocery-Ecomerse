@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}" />
+  </head>
+
+  <body>
+    <div class="main">
+      {% if user.is_authenticated %}
+      <!-- Show logout button if user is logged in -->
+      <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button type="submit">Logout</button>
+      </form>
+  {% else %}
+      <!-- Show login form if user is not logged in -->
+      <h1>Login</h1>
+      <h3>Enter your login credentials</h3>
+  
+      {% if error_message %}
+      <p>{{ error_message }}</p>
+      {% endif %} {% if wrong_password %}
+      <div style="display: flex; text-align: center; justify-content: center">
+          <p class="wrong-password">Wrong password entered. Please try again.</p>
+      </div>
+      {% endif %}
+  
+      <form action="{% url 'login' %}" method="post">
+          {% csrf_token %}
+          <label for="name">Username:</label>
+          <input
+              type="text"
+              id="name"
+              name="username"
+              placeholder="Enter your Username"
+              required
+          />
+  
+          <label for="password">Password:</label>
+          <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your Password"
+              required
+          />
+  
+          <div class="wrap">
+              <button type="submit">Submit</button>
+          </div>
+      </form>
+      <p>
+          Not registered?
+          <a href="{% url 'register' %}" style="text-decoration: none">
+              Create an account
+          </a>
+      </p>
+  {% endif %}
+    </div>
+  </body>
+</html>
